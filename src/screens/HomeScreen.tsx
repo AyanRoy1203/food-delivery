@@ -2,6 +2,7 @@ import { IonContent,IonPage } from '@ionic/react';
 
 import './HomeScreen.scss';
 import FilterComponents from '../components/HomeComponents/FilterComponents';
+import HomeBanner from '../components/HomeComponents/HomeBanner';
 
 
 const HomeScreen: React.FC = () => {
@@ -14,7 +15,9 @@ const HomeScreen: React.FC = () => {
             <FilterComponents/>
           </div>
           <div className='body_section'>
-           
+           <div className='banner_section'>
+            <HomeBanner/>
+            </div>
           </div>
         </div>
         
