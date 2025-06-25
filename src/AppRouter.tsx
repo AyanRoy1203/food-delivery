@@ -4,6 +4,8 @@ import React from 'react'
 import { Redirect, Route } from 'react-router-dom'
 import HomeScreen from './screens/HomeScreen'
 
+import RestaurantsMenuScreen from './screens/RestaurantsMenuScreen'
+
 
 const AppRouter = () => {
   return (
@@ -15,6 +17,9 @@ const AppRouter = () => {
         </Route>
         <Route exact path="/">
           <Redirect to="/home" />
+        </Route>
+        <Route exact path="/restaurant-menu/:restaurantId">
+        <RestaurantsMenuScreen/>
         </Route>
       </IonRouterOutlet>
     </IonReactRouter>
