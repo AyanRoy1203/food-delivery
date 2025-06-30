@@ -1,6 +1,11 @@
 import React from "react";
 import "./MenuCard.scss";
-const MenuCard: React.FC = () => {
+import { IMenuItems } from "../../interfaces/restaurant";
+interface ItemCardProps 
+{
+  itemData:IMenuItems;
+}
+const MenuCard: React.FC<ItemCardProps> = ({itemData}) => {
   return (
     
       <div className="menu_card">

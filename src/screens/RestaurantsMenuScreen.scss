@@ -31,7 +31,10 @@
             height: auto;
             justify-content: center;
             align-items: center;
-            
+            flex-wrap: wrap;
+            .menu_list{
+                width:100%;
+            }
         }
     
     }
