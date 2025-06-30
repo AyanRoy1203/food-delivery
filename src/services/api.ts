@@ -11,14 +11,16 @@ export const getAllRestaurants = async (): Promise<IRestaurant[]> => {
 };
 export const getItemsByRestaurantId = async (restaurantId:string):Promise<IMenuItems[]> => {
     return await new Promise((resolve, reject) => {
-      reject(null);
+
+      
       
       const filteredMenuItems = menuItemsList.filter((item)=> { 
-        return item.restaurantId === restaurantId;
+        return item.restaurantId.toString() === restaurantId.toString();
     
   })
 
       resolve(filteredMenuItems);
+      reject(null);
     })
   
 };

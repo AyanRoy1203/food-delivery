@@ -1,30 +1,27 @@
 import React from "react";
 import "./MenuCard.scss";
 import { IMenuItems } from "../../interfaces/restaurant";
-interface ItemCardProps 
-{
-  itemData:IMenuItems;
+
+export interface ItemCardProps {
+  itemData: IMenuItems;
+  addItem: (Data: IMenuItems)=>void;
 }
-const MenuCard: React.FC<ItemCardProps> = ({itemData}) => {
+
+const MenuCard: React.FC<ItemCardProps> = ({ itemData, addItem }) => {
   return (
-    
-      <div className="menu_card">
-        <div className="image_section">
-          <img src="" alt="" />
-        </div>
-        <div className="content_section">
-          <div className="title">
-            Lorem ipsum dolor
-          </div>
-          <div className="description">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cupiditate, omnis.
-            </div>
-          <div className="button">
-            Add Item
-            </div>
-        </div>
+    <div className="menu_card">
+      <div className="image_section">
+        <img src={itemData.image} alt="" />
       </div>
-    
+      <div className="content_section">
+        <div className="title">{itemData.name}</div>
+        <div className="description">{itemData.description}</div>
+        <div className="price_detail">
+          <div className="price">›{itemData.price}</div>
+        </div>
+        <div className="button" onClick = {()=>{addItem(itemData);}}>Add Item</div>
+      </div>
+    </div>
   );
 };
 

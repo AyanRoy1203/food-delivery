@@ -3,6 +3,7 @@ import { IMenuItems, IRestaurant } from "../interfaces/restaurant";
 export const restaurantList: IRestaurant[] = [
   {
     _id: "1",
+    
     name: "Spice Garden Grill",
     image: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=400&h=250&fit=crop",
     description: "Authentic Indian spicy dishes",
