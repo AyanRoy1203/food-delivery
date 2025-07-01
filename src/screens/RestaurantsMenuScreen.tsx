@@ -5,40 +5,47 @@ import MenuCard from "../components/menuComponents/MenuCard";
 import { useHistory, useParams } from "react-router";
 import { getItemsByRestaurantId, getRestaurantById } from "../services/api";
 import { ICart, IMenuItems, IRestaurant } from "../interfaces/restaurant";
+
 const RestaurantMenuScreen: React.FC = () => {
   const [restaurantCart, setRestaurantCart] = useState<ICart>();
-  const [allRestaurantMenuItems, setAllRestaurantMenuItems] = useState<
-    IMenuItems[]
-  >([]);
-  const [restaurantData,setRestaurantData] = useState<IRestaurant>();
+  const [allRestaurantMenuItems, setAllRestaurantMenuItems] = useState<IMenuItems[]>([]);
+  const [restaurantData, setRestaurantData] = useState<IRestaurant>();
   const { restaurantId } = useParams<{ restaurantId: string }>();
   const history = useHistory();
-  useEffect(() => {
-    getRestaurantById(restaurantId).then((response)=>{
-      setRestaurantData(response);
-    }).catch((error) =>{
-      console.log(error);
-    })
 
-  
+  useEffect(() => {
+    if (!restaurantId) return;
+
+    getRestaurantById(restaurantId)
+      .then((response: IRestaurant) => {
+        setRestaurantData(response);
+      })
+      .catch((error: unknown) => {
+        console.log("Error fetching restaurant data:", error);
+      });
+
     getItemsByRestaurantId(restaurantId)
-      .then((response) => {
+      .then((response: IMenuItems[]) => {
         setAllRestaurantMenuItems(response);
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((error: unknown) => {
+        console.log("Error fetching menu items:", error);
       });
-  }, []);
+  }, [restaurantId]);
+
   useEffect(() => {
-    console.log("restuarantCart", restaurantCart);
+    console.log("restaurantCart", restaurantCart);
   }, [restaurantCart]);
-   
 
   const handleAddItemsInCart = (menuItem: IMenuItems) => {
-    // console.log(menuItem);
     let newCart: ICart;
-    if (restaurantCart ) {
-      newCart = {...restaurantCart,items:[...restaurantCart.items]};
+
+    if (restaurantCart) {
+      newCart = {
+        ...restaurantCart,
+        items: [...restaurantCart.items],
+        totalPrice: restaurantCart.totalPrice,
+      };
     } else {
       newCart = {
         restaurantId: restaurantId,
@@ -46,75 +53,65 @@ const RestaurantMenuScreen: React.FC = () => {
         totalPrice: 0,
       };
     }
-    const isItemInclude = newCart.items.find((item) => {
-      return item.itemId === menuItem._id;
-    });
-    if (isItemInclude) {
-      return;
-    } else {
-      const newCartItem = {
-        itemId: menuItem._id,
-        price: menuItem.price,
-        name: menuItem.name,
-        quantity: 1,
-        totalItemPrice: menuItem.price,
-      };
-      newCart.items.push(newCartItem);
-      console.log('nnn', newCart);
-      
-      setRestaurantCart(newCart);
-    }
+
+    const isItemIncluded = newCart.items.find((item) => item.itemId === menuItem._id);
+    if (isItemIncluded) return;
+
+    const newCartItem = {
+      itemId: menuItem._id,
+      price: menuItem.price,
+      name: menuItem.name,
+      quantity: 1,
+      totalItemPrice: menuItem.price,
+    };
+
+    newCart.items.push(newCartItem);
+    newCart.totalPrice += menuItem.price;
+
+    setRestaurantCart(newCart);
   };
-  const handleRemoveItemsFromCart=(menuItemId : string)=>{
-    if(restaurantCart){
-   const  newCartItems = restaurantCart?.items.filter((cartItem)=>{
-       return cartItem.itemId!== menuItemId;
-    })
-  
-  setRestaurantCart((prev) => {
-        if (!prev) {
-          return prev;
-        }
-        return {
-          ...prev,
-          items: newCartItems,
-        };
-      });}
-    }
+
+  const handleRemoveItemsFromCart = (menuItemId: string) => {
+    if (!restaurantCart) return;
+
+    const newCartItems = restaurantCart.items.filter((cartItem) => cartItem.itemId !== menuItemId);
+    const newTotal = newCartItems.reduce((sum, item) => sum + item.totalItemPrice, 0);
+
+    setRestaurantCart({
+      ...restaurantCart,
+      items: newCartItems,
+      totalPrice: newTotal,
+    });
+  };
+
   return (
     <IonPage>
       <IonContent fullscreen>
         <div className="restaurant_menu_screen">
           <div className="menu_header">
-            <div
-              className="back_button"
-              onClick={() => {
-                history.goBack();
-              }}
-            >
+            <div className="back_button" onClick={() => history.goBack()}>
               back
             </div>
-            <div className="title">{restaurantData?.name}</div>
+            <div className="title">{restaurantData ? restaurantData.name : "Loading..."}</div>
           </div>
           <div className="menu_body">
             <div className="menu_card_section">
-              {allRestaurantMenuItems &&
-                allRestaurantMenuItems.map((menuItems, menuItemsIndex) => {
+              {allRestaurantMenuItems.map((menuItem, index) => {
+                const isIncluded = restaurantCart?.items.some(
+                  (cartItem) => cartItem.itemId === menuItem._id
+                );
 
-                  const filteredCartItem = restaurantCart?.items.find((cartItem)=>{
-                    return cartItem.itemId===menuItems._id
-                  })
-                  return (
-                    <div className="menu_list" key={menuItemsIndex}>
-                      <MenuCard
-                        addItem={handleAddItemsInCart}
-                        itemData={menuItems}
-                        isIncluded = {filteredCartItem?true:false}
-                        removeItem = {handleRemoveItemsFromCart}
-                      />
-                    </div>
-                  );
-                })}
+                return (
+                  <div className="menu_list" key={index}>
+                    <MenuCard
+                      addItem={handleAddItemsInCart}
+                      itemData={menuItem}
+                      isIncluded={!!isIncluded}
+                      removeItem={handleRemoveItemsFromCart}
+                    />
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
