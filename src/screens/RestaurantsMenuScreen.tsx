@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./RestaurantsMenuScreen.scss";
+import "./RestaurantMenuScreen.scss";
 import { IonContent, IonPage } from "@ionic/react";
 import MenuCard from "../components/menuComponents/MenuCard";
 import { useHistory, useParams } from "react-router";
