@@ -10,17 +10,19 @@ const RestaurantMenuScreen: React.FC = () => {
   const [allRestaurantMenuItems, setAllRestaurantMenuItems] = useState<
     IMenuItems[]
   >([]);
-  const [restaurantData,setRestaurantData] = useState<IRestaurant>();
+  const [restaurantData, setRestaurantData] = useState<IRestaurant>();
   const { restaurantId } = useParams<{ restaurantId: string }>();
   const history = useHistory();
-  useEffect(() => {
-    getRestaurantById(restaurantId).then((response)=>{
-      setRestaurantData(response);
-    }).catch((error) =>{
-      console.log(error);
-    })
 
-  
+  useEffect(() => {
+    getRestaurantById(restaurantId)
+      .then((response) => {
+        setRestaurantData(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
     getItemsByRestaurantId(restaurantId)
       .then((response) => {
         setAllRestaurantMenuItems(response);
@@ -29,16 +31,26 @@ const RestaurantMenuScreen: React.FC = () => {
         console.log(error);
       });
   }, []);
+
+  useEffect(() => {
+    const cartString = localStorage.getItem("restaurantCart");
+
+    if (cartString && cartString !== "undefined" && cartString !== "null") {
+      const cartData: ICart = JSON.parse(cartString);
+      setRestaurantCart(cartData);
+    }
+  }, []);
+
   useEffect(() => {
     console.log("restuarantCart", restaurantCart);
+    localStorage.setItem("restaurantCart", JSON.stringify(restaurantCart));
   }, [restaurantCart]);
-   
 
   const handleAddItemsInCart = (menuItem: IMenuItems) => {
-    // console.log(menuItem);
+    console.log(menuItem);
     let newCart: ICart;
-    if (restaurantCart ) {
-      newCart = {...restaurantCart,items:[...restaurantCart.items]};
+    if (restaurantCart !== undefined) {
+      newCart = { ...restaurantCart, items: [...restaurantCart.items] };
     } else {
       newCart = {
         restaurantId: restaurantId,
@@ -58,20 +70,26 @@ const RestaurantMenuScreen: React.FC = () => {
         name: menuItem.name,
         quantity: 1,
         totalItemPrice: menuItem.price,
+        itemImage: menuItem.image,
+        description: menuItem.description,
       };
       newCart.items.push(newCartItem);
-      console.log('nnn', newCart);
-      
+
+      newCart.totalPrice = newCart.items.reduce(
+        (acc, item) => acc + item.totalItemPrice,
+        0
+      );
       setRestaurantCart(newCart);
     }
   };
-  const handleRemoveItemsFromCart=(menuItemId : string)=>{
-    if(restaurantCart){
-   const  newCartItems = restaurantCart?.items.filter((cartItem)=>{
-       return cartItem.itemId!== menuItemId;
-    })
-  
-  setRestaurantCart((prev) => {
+
+  const handleRemoveItemFromCart = (menuItemId: string) => {
+    if (restaurantCart) {
+      const newCartItems = restaurantCart?.items.filter((cartItem) => {
+        return cartItem.itemId !== menuItemId;
+      });
+
+      setRestaurantCart((prev) => {
         if (!prev) {
           return prev;
         }
@@ -79,8 +97,9 @@ const RestaurantMenuScreen: React.FC = () => {
           ...prev,
           items: newCartItems,
         };
-      });}
+      });
     }
+  };
   return (
     <IonPage>
       <IonContent fullscreen>
@@ -95,22 +114,31 @@ const RestaurantMenuScreen: React.FC = () => {
               back
             </div>
             <div className="title">{restaurantData?.name}</div>
+            <div
+              className="back_button"
+              onClick={() => {
+                history.push("/cart-screen");
+              }}
+            >
+              Go to Cart
+            </div>
           </div>
           <div className="menu_body">
             <div className="menu_card_section">
               {allRestaurantMenuItems &&
                 allRestaurantMenuItems.map((menuItems, menuItemsIndex) => {
-
-                  const filteredCartItem = restaurantCart?.items.find((cartItem)=>{
-                    return cartItem.itemId===menuItems._id
-                  })
+                  const filteredCartItem = restaurantCart?.items.find(
+                    (cartItem) => {
+                      return cartItem.itemId === menuItems._id;
+                    }
+                  );
                   return (
                     <div className="menu_list" key={menuItemsIndex}>
                       <MenuCard
                         addItem={handleAddItemsInCart}
                         itemData={menuItems}
-                        isIncluded = {filteredCartItem?true:false}
-                        removeItem = {handleRemoveItemsFromCart}
+                        isIncluded={filteredCartItem ? true : false}
+                        removeItem={handleRemoveItemFromCart}
                       />
                     </div>
                   );
