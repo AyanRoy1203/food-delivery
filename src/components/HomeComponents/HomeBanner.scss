@@ -1,0 +1,74 @@
+.home_banner{
+    
+    width: 100%;
+    height: 175px;
+    background-image: url('public/assets/homeScreen/banner/home-banner.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 25px;
+    // box-shadow: 0 0 20px yellow;
+    position:relative;
+
+    .bg_layout{
+
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to right,rgb(40, 40, 40),rgba(0, 0, 0, 0.09));
+        border-radius: 25px;
+        position:absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+    }
+
+    .banner_content{
+
+        color:aliceblue;
+        position:absolute;
+        top:0;
+        left:0;
+        width: 100%;
+        z-index: 2;
+        display: flex;
+        flex-wrap: nowrap;
+
+        .left_content{
+            
+            width:70%;
+            padding:15px 10px;
+            
+            .title{
+                margin-bottom: 10px;
+                font-size: 18px;
+                font-weight: 500px;
+                color: white;
+            }
+
+            .text{
+                font-size: 16px;
+                color: #909096;
+            }}
+
+            .right_content{
+
+                width:30%;
+                height:100%;
+                display:flex;
+                justify-content: end;
+                align-items: end;
+            }
+
+            .cart_button{
+
+                width:max-content;
+                padding:7px 14px;
+                background-color: #cd5721;
+                border-radius: 0 25px 0 25px;
+                font-size: 13px;
+                font-weight: 500px;
+                color: white;
+                padding:15px 10px;
+            
+            }
+    }
+}
