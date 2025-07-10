@@ -7,6 +7,7 @@ import RestaurantMenuScreen from './screens/RestaurantsMenuScreen'
 import CartScreen from './screens/CartScreen'
 
 import OrderScreen from './screens/OrderScreen';
+import OrderDetail from './screens/OrderDetail'
 // ...
 
 
@@ -27,7 +28,12 @@ const AppRouter = () => {
          <Route  exact path="/cart-screen">
         <CartScreen/>
         </Route>
-        <Route path="/order" component={OrderScreen} />
+        <Route  exact path="/order-screen">
+        <OrderScreen/>
+        </Route>
+        <Route  exact path="/order-detail">
+        <OrderDetail/>
+        </Route>
       </IonRouterOutlet>
     </IonReactRouter>
     </>

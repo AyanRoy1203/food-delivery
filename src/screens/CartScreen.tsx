@@ -20,6 +20,7 @@ const CartScreen: React.FC = () => {
     if (cartString && cartString !== "undefined" && cartString !== "null") {
       try {
         const cartData: ICart = JSON.parse(cartString);
+
         setRestaurantCart(cartData);
 
         getRestaurantById(cartData.restaurantId)
@@ -97,26 +98,50 @@ const CartScreen: React.FC = () => {
             </div>
 
             <div className="cart_item_section">
-              {restaurantCart &&
-                restaurantCart.items?.map((cartItem, itemIndex) => {
-                  return (
-                    <div key={itemIndex}>
-                      <CartItem
-                        cartItemData={cartItem}
-                        itemIndex={itemIndex}
-                        incrementOrDecrement={handleIncrementOrDecrement}
-                      />
-                    </div>
-                  );
-                })}
+              {restaurantCart && restaurantCart.items.length ? (
+                <>
+                  {restaurantCart &&
+                    restaurantCart.items?.map((cartItem, itemIndex) => {
+                      return (
+                        <div key={itemIndex}>
+                          <CartItem
+                            cartItemData={cartItem}
+                            itemIndex={itemIndex}
+                            incrementOrDecrement={handleIncrementOrDecrement}
+                          />
+                        </div>
+                      );
+                    })}
+                </>
+              ) : (
+                <div>0 Items in cart</div>
+              )}
             </div>
             <div className="footer_section">
-              <div className="total_section">
-                <span>Payable Amount</span>
-                <span>₹ {restaurantCart?.totalPrice}</span>
-              </div>
+              {restaurantCart && restaurantCart.totalPrice ? (
+                <>
+                  <div className="total_section">
+                    <span>Payable Amount</span>
+                    <span>₹ {restaurantCart.totalPrice}</span>
+                  </div>
 
-              <button className="place_order_btn">Place Order</button>
+                  <button className="place_order_btn" 
+                  onClick={() => {
+                      history.push("/order-screen");
+                    }}
+                    >Place Order</button>
+                </>
+              ) : (
+                <>
+                  <button
+                    className="place_order_btn"
+                    
+                  >
+                    Add Items in Cart
+                  </button>
+                  
+                </>
+              )}
             </div>
           </div>
         </div>
