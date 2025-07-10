@@ -1,0 +1,104 @@
+// src/screens/OrderScreen.scss
+
+.order_page {
+  background: #f5f5f5;
+
+  &__header {
+    background: white;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: #222;
+    }
+  }
+
+  .order_card {
+    background: white;
+    margin: 16px;
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: #222;
+    }
+
+    &__box {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    &__img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    &__info {
+      h3 {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 4px;
+        color: #333;
+      }
+
+      .delivery_time {
+        font-size: 14px;
+        color: #006400;
+
+        span {
+          font-weight: bold;
+        }
+      }
+
+      .order_details {
+        font-size: 14px;
+        color: #777;
+        margin-top: 4px;
+      }
+    }
+
+    .view_order_btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #ff6600;
+      color: white;
+      border: none;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 24px;
+      cursor: pointer;
+    }
+  }
+
+  .accordion_section {
+    margin-top: 20px;
+    padding: 0 16px;
+
+    .accordion_item {
+      background: #efefef;
+      padding: 14px 12px;
+      border-bottom: 1px solid #ddd;
+      font-size: 16px;
+      font-weight: 600;
+      color: #222;
+      cursor: pointer;
+    }
+
+    .accordion_item:last-child {
+      border-bottom: none;
+    }
+  }
+}

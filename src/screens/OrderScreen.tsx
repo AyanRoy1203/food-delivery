@@ -1,37 +1,51 @@
-import React from 'react';
-import { useLocation } from 'react-router-dom';
-import './OrderScreen.scss';
+// src/screens/OrderScreen.tsx
 
-interface OrderItem {
-  name: string;
-  price: number;
-  quantity: number;
-}
+import React from "react";
+import "./OrderScreen.scss";
+import { IonContent, IonPage } from "@ionic/react";
+import { useHistory } from "react-router";
 
-interface OrderDetails {
-  restaurantName: string;
-  items: OrderItem[];
-  total: number;
-}
+const OrderScreen: React.FC = () => {
+  const history = useHistory();
 
-const OrderScreen = () => {
-  const location = useLocation();
-  const orderDetails = location.state as OrderDetails;
+  const handleViewOrder = () => {
+  history.push("/order-detail"); 
+};
+
 
   return (
-    <div className="order_screen">
-      <h2>Order Confirmed 🎉</h2>
-      <p>Thank you for ordering from {orderDetails.restaurantName}!</p>
-      <h3>Items:</h3>
-      <ul>
-        {orderDetails.items.map((item, index) => (
-          <li key={index}>
-            {item.name} x {item.quantity} = ₹{item.price * item.quantity}
-          </li>
-        ))}
-      </ul>
-      <h4>Total: ₹{orderDetails.total}</h4>
-    </div>
+    <IonPage>
+      <IonContent className="order_page">
+        <header className="order_page__header">
+          <div className="order_page__logo">
+            <h3>Urban Thai Delight</h3>
+          </div>
+        </header>
+
+        <main className="order_card">
+          <h2>Your orders</h2>
+          <div className="order_card__box">
+            <img
+              src="https://images.pexels.com/photos/3026808/pexels-photo-3026808.jpeg"
+              className="order_card__img"
+            />
+            <div className="order_card__info">
+              <h3>Pad Thai Noodles</h3>
+              <p className="delivery_time">
+                Estimated delivery time: <span>11:10 - 11:30</span>
+              </p>
+              <p className="order_details">1 item · ₹180</p>
+            </div>
+          </div>
+
+          <button className="view_order_btn" onClick={handleViewOrder}>
+            View order
+          </button>
+        </main>
+
+        
+      </IonContent>
+    </IonPage>
   );
 };
 

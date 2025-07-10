@@ -125,18 +125,21 @@ const CartScreen: React.FC = () => {
                     <span>₹ {restaurantCart.totalPrice}</span>
                   </div>
 
-                  <button className="place_order_btn">Place Order</button>
+                  <button className="place_order_btn" 
+                  onClick={() => {
+                      history.push("/order-screen");
+                    }}
+                    >Place Order</button>
                 </>
               ) : (
                 <>
                   <button
                     className="place_order_btn"
-                    onClick={() => {
-                      history.goBack();
-                    }}
+                    
                   >
                     Add Items in Cart
                   </button>
+                  
                 </>
               )}
             </div>
