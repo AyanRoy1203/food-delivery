@@ -5,7 +5,7 @@ import "./OrderDetail.scss";
 import { IonPage, IonContent } from "@ionic/react";
 import { useHistory } from "react-router";
 
-const OrderDetailsScreen: React.FC = () => {
+const OrderDetail: React.FC = () => {
   const history = useHistory();
 
   return (
@@ -55,4 +55,4 @@ const OrderDetailsScreen: React.FC = () => {
   );
 };
 
-export default OrderDetailsScreen;
+export default OrderDetail;
